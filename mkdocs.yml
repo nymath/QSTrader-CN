@@ -1,0 +1,7 @@
+site_name: QSTrader-CN 使用指南
+site_url: http://nymath.com/
+nav:
+    - Home: index.md
+    - 随便测试一下: test.md
+theme: readthedocs
+
