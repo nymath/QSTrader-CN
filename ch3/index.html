@@ -35,6 +35,9 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
 </div>
 <div data-md-component="announce">
 </div>
@@ -159,6 +162,20 @@
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
+<h1 id="_1">模组介绍<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<p>在第三部分, 我们的目的是结合一二部分的成果, 构建回测系统.</p>
+<pre class="mermaid"><code>classDiagram
+    BacktestTradingSession *-- Universe: universe
+    BacktestTradingSession *-- AlphaModel: alpha_model
+    BacktestTradingSession *-- SignalsCollection: signals
+    BacktestTradingSession *-- FeeModel : fee_model
+    BacktestTradingSession *-- BacktestDataHandler: data_handler
+    BacktestTradingSession *-- SimulatedExchange: exchange
+    BacktestTradingSession *-- SimulatedBroker: broker
+    BacktestTradingSession *-- SimulationEngine: sim_engine
+    BacktestTradingSession *-- Rebalance: rebalance_schedule
+    BacktestTradingSession &lt;.. QuantTradingSystem</code></pre>
+<p>接下来开始介绍不同的节点(nodes)</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

@@ -35,6 +35,9 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
 </div>
 <div data-md-component="announce">
 </div>
@@ -159,6 +162,16 @@
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
+<h1 id="_1">模组简介<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<p>在第二部分, 我们主要介绍账户, 订单管理. 在本部分, 我们最终目的是构建<code>QuantTradingSystem</code></p>
+<pre class="mermaid"><code>classDiagram
+    QuantTradingSystem *-- Universe: universe
+    QuantTradingSystem *-- BacktestDataHandler: data_handler
+    QuantTradingSystem *-- SimulatedBroker: broker
+    QuantTradingSystem *-- AlphaModel: alpha_model
+    QuantTradingSystem &lt;.. OrderSizer
+    QuantTradingSystem &lt;.. PortfolioConstructionModel
+    QuantTradingSystem &lt;.. ExecutionHandler</code></pre>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
