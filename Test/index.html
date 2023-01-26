@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="http://nymath.com/Test/" rel="canonical"/>
+<link href=".." rel="prev"/>
+<link href="../ch1/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.4.2, mkdocs-material-9.0.6" name="generator"/>
+<title>Tests - QSTrader-CN 使用指南</title>
+<link href="../assets/stylesheets/main.558e4712.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.2505c338.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            
+                .gscrollbar-fixer { padding-right: 15px; }
+                .gdesc-inner { font-size: 0.75rem; }
+                body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+                body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+                body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+                </style><script src="../assets/javascripts/glightbox.min.js"></script></head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="default" dir="ltr">
+<script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="QSTrader-CN 使用指南" class="md-header__button md-logo" data-md-component="logo" href=".." title="QSTrader-CN 使用指南">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            QSTrader-CN 使用指南
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Tests
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="" data-md-color-media="" data-md-color-primary="" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_2" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="" data-md-color-media="" data-md-color-primary="" data-md-color-scheme="slate" id="__palette_2" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"></path></svg>
+</label>
+</form>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/nymath/QSTrader-CN" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="QSTrader-CN 使用指南" class="md-nav__button md-logo" data-md-component="logo" href=".." title="QSTrader-CN 使用指南">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"></path></svg>
+</a>
+    QSTrader-CN 使用指南
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/nymath/QSTrader-CN" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+        QuickStart
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Tests
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        Tests
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+    汇总
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#annotations">
+    Annotations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#buttons">
+    Buttons
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-blocks">
+    Code Blocks
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-tabs">
+    Content tabs
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-tables">
+    Data tables
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#footnotes">
+    Footnotes
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#formatting">
+    Formatting
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#grids">
+    Grids
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#images">
+    Images
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lists">
+    Lists
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ch1/">
+        Modules I(Makert &amp; Strategy)
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ch2/">
+        Modules II(Portfolio &amp; Execution)
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ch3/">
+        Modules III(Backtest)
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../che/">
+        Examples
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ref/">
+        Reference
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+    汇总
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#annotations">
+    Annotations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#buttons">
+    Buttons
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-blocks">
+    Code Blocks
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#content-tabs">
+    Content tabs
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-tables">
+    Data tables
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#footnotes">
+    Footnotes
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#formatting">
+    Formatting
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#grids">
+    Grids
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#images">
+    Images
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lists">
+    Lists
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="_1">功能测试<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<div class="arithmatex">\[
+\text{设置快捷键命令}
+\newcommand{\D}{\mathrm{d}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\xt}{\mathbf{x}^{\mathsf{T}}}
+\newcommand{\T}{{\mathsf{T}}}
+\newcommand{\abf}{\mathbf{a}}
+\newcommand{\abft}{\mathbf{a}^{\mathsf{T}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathrm{e}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\renewcommand{\l}{\mathcal{l}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\bfi}{\mathbf{i}}
+\newcommand{\bftheta}{\bm{\theta}}
+\newcommand{\rmvec}{\mathrm{vec}}
+\newcommand{\argmin}{\mathop{\arg\min}}
+\newcommand{\argmax}{\mathop{\arg\max}}
+\newcommand{\f}{\mathbf{f}}
+\newcommand{\U}{\mathbf{u}}
+\newcommand{\D}{\mathrm{d}}
+\newcommand{\MCG}{\mathcal{G}}
+\newcommand{\MCH}{\mathcal{H}}
+\newcommand{\MCF}{\mathcal{F}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\bfb}{\mathbf{b}}
+\newcommand{\MCB}{\mathcal{B}}
+\newcommand{\MCT}{\mathcal{T}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\nullspace}{\mathrm{null}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\range}{\mathrm{range}}
+\newcommand{\listofalgorithmes}{\tocfile{\listalgorithmcfname}{loa}}
+\]</div>
+<details class="note"><summary>快捷键设置命令</summary><div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">符号</label><label for="__tabbed_1_2">公式</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><table class="highlighttable"><tr><th class="filename" colspan="2"><span class="filename">config.tex</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\inner</span><span class="nb">}</span>[2]<span class="nb">{{</span><span class="k">\langle</span> #1,#2<span class="k">\rangle</span><span class="nb">}}</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\D</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>d<span class="nb">}}</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\x</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>x<span class="nb">}}</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\xt</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>x<span class="nb">}^{</span><span class="k">\mathsf</span><span class="nb">{</span>T<span class="nb">}}}</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\T</span><span class="nb">}{{</span><span class="k">\mathsf</span><span class="nb">{</span>T<span class="nb">}}}</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\abf</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>a<span class="nb">}}</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\abft</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>a<span class="nb">}^{</span><span class="k">\mathsf</span><span class="nb">{</span>T<span class="nb">}}}</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\R</span><span class="nb">}{</span><span class="k">\mathbb</span><span class="nb">{</span>R<span class="nb">}}</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\E</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>e<span class="nb">}}</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\F</span><span class="nb">}{</span><span class="k">\mathbb</span><span class="nb">{</span>F<span class="nb">}}</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\X</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>X<span class="nb">}}</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\Y</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>Y<span class="nb">}}</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\y</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>y<span class="nb">}}</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\l</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>l<span class="nb">}}</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\z</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>z<span class="nb">}}</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\Z</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>Z<span class="nb">}}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\bfi</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>i<span class="nb">}}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\bftheta</span><span class="nb">}{</span><span class="k">\bm</span><span class="nb">{</span><span class="k">\theta</span><span class="nb">}}</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\rmvec</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>vec<span class="nb">}}</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\argmin</span><span class="nb">}{</span><span class="k">\mathop</span><span class="nb">{</span><span class="k">\arg\min</span><span class="nb">}}</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\argmax</span><span class="nb">}{</span><span class="k">\mathop</span><span class="nb">{</span><span class="k">\arg\max</span><span class="nb">}}</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\f</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>f<span class="nb">}}</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\U</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>u<span class="nb">}}</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\D</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>d<span class="nb">}}</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\MCG</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>G<span class="nb">}}</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\MCH</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>H<span class="nb">}}</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\MCF</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>F<span class="nb">}}</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\M</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>M<span class="nb">}}</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\W</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>W<span class="nb">}}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\bfb</span><span class="nb">}{</span><span class="k">\mathbf</span><span class="nb">{</span>b<span class="nb">}}</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\MCB</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>B<span class="nb">}}</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\MCT</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>T<span class="nb">}}</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\LL</span><span class="nb">}{</span><span class="k">\mathcal</span><span class="nb">{</span>L<span class="nb">}}</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\nullspace</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>null<span class="nb">}}</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\tr</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>tr<span class="nb">}}</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\range</span><span class="nb">}{</span><span class="k">\mathrm</span><span class="nb">{</span>range<span class="nb">}}</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\listofalgorithmes</span><span class="nb">}{</span><span class="k">\tocfile</span><span class="nb">{</span><span class="k">\listalgorithmcfname</span><span class="nb">}{</span>loa<span class="nb">}}</span>
+</code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><table class="highlighttable"><tr><th class="filename" colspan="2"><span class="filename">config.tex</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">\definecolor</span><span class="nb">{</span>codegreen<span class="nb">}{</span>rgb<span class="nb">}{</span>0,0.6,0<span class="nb">}</span>
+</code></pre></div></td></tr></table></div>
+</div>
+</div>
+</input></input></div>
+</details>
+<p><a href="https://squidfunk.github.io/mkdocs-material/reference/buttons/#usage">https://squidfunk.github.io/mkdocs-material/reference/buttons/#usage</a></p>
+<div class="admonition danger">
+<p class="admonition-title">test</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><input id="__tabbed_2_3" name="__tabbed_2" type="radio"><input id="__tabbed_2_4" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">OLS</label><label for="__tabbed_2_2">Black-Scholes</label><label for="__tabbed_2_3">Eular Equation</label><label for="__tabbed_2_4">Riesz  Representation Theorem</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="arithmatex">\[
+(\X^\prime \X)^{-1} \X^\prime \Y
+\]</div>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+\begin{cases}
+    rf = \frac{\partial f}{\partial t} + r x \frac{\partial f}{\partial x} + \frac{1}{2} \sigma^2 x^2 \frac{\partial^2 f}{\partial x^2}\\
+    f(T,x) = (x-K)^{+}
+\end{cases}
+\]</div>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+\E^z = \sum_{k=0}^{+\infty} \frac{z^k}{k!}, \quad \E^{a+ib} = \E^a(\cos{b} + i\sin{b})
+\]</div>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>Suppose <span class="arithmatex">\(\varphi\)</span> is a <strong>bounded</strong> linear functional on a Hilbert sapce V. Then there exists
+a unique <span class="arithmatex">\(h \in V\)</span> such that
+$$ \varphi(f) = \langle f, h \rangle$$
+for all <span class="arithmatex">\(f \in V\)</span>. Furthermore, <span class="arithmatex">\(\Vert \varphi \Vert = \Vert h \Vert\)</span>.</p>
+</blockquote>
+</div>
+</div>
+</input></input></input></div>
+</div>
+<h2 id="_2">汇总<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Theorem</p>
+<p>this is a tip</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Theorem</p>
+<p>this is a tip</p>
+</div>
+<details class="note"><summary>theorem</summary><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+massa, nec semper lorem quam in massa.</p>
+</details>
+<blockquote>
+<p>可以使用attention, caution, danger, error, hint, important, note,
+tip, and warning。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">def</span> <span class="nf">bubble_sort</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+<a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+<a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">):</span>
+<a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>            <span class="k">if</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+<a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>                <span class="n">items</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>23</li>
+<li>123</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>:material-check:     Fetch resource</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>:material-check-all: Update resource</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>:material-close:     Delete resource</td>
+</tr>
+</tbody>
+</table>
+<h2 id="annotations">Annotations<a class="headerlink" href="#annotations" title="Permanent link">¶</a></h2>
+<p class="annotate">这个功能似乎和mermaid冲突了
+Lorem ipsum dolor sit amet, (1) consectetur adipiscing elit.</p>
+<ol>
+<li>:man_raising_hand: I'm an annotation! I can contain <code>code</code>, <strong>formatted
+    text</strong>, images, ... basically anything that can be expressed in Markdown.</li>
+</ol>
+<h2 id="buttons">Buttons<a class="headerlink" href="#buttons" title="Permanent link">¶</a></h2>
+<p><a class="md-button" href="#">Subscribe to our newsletter</a></p>
+<h2 id="code-blocks">Code Blocks<a class="headerlink" href="#code-blocks" title="Permanent link">¶</a></h2>
+<p>加title, 行数, highlight的行数</p>
+<div class="highlight"><table class="highlighttable"><tr><th class="filename" colspan="2"><span class="filename">config.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="hll"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="hll"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="content-tabs">Content tabs<a class="headerlink" href="#content-tabs" title="Permanent link">¶</a></h2>
+<p>核心语法非常简单, 相当于利用"==="作为选择工具, 但需要注意缩进问题</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">C</label><label for="__tabbed_3_2">C++</label><label for="__tabbed_3_3">python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>
+<a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">printf</span><span class="p">(</span><span class="s">"Hello world!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>
+<a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Hello world!"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span> <span class="nf">main</span><span class="p">{</span>
+<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Hello World!"</span><span class="p">)</span>
+<a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>    <span class="k">return</span> <span class="mi">0</span>
+<a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>当然还可以用来嵌入其它结构</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Unordered list</label><label for="__tabbed_4_2">Ordered list</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>Sed sagittis eleifend rutrum</li>
+<li>Donec vitae suscipit est</li>
+<li>Nulla tempor lobortis orci</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>Sed sagittis eleifend rutrum</li>
+<li>Donec vitae suscipit est</li>
+<li>Nulla tempor lobortis orci</li>
+</ol>
+</div>
+</div>
+</div>
+<h2 id="data-tables">Data tables<a class="headerlink" href="#data-tables" title="Permanent link">¶</a></h2>
+<p>还是有bug</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>:material-check:     Fetch resource</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>:material-check-all: Update resource</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>:material-close:     Delete resource</td>
+</tr>
+</tbody>
+</table>
+<h2 id="footnotes">Footnotes<a class="headerlink" href="#footnotes" title="Permanent link">¶</a></h2>
+<p>用不了
+Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit.[^2]</p>
+<h2 id="formatting">Formatting<a class="headerlink" href="#formatting" title="Permanent link">¶</a></h2>
+<p>Text can be <del class="critic">deleted</del> and replacement text <ins class="critic">added</ins>. This can also be
+combined into <del class="critic">one</del><ins class="critic">a single</ins> operation. <mark class="critic">Highlighting</mark> is also
+possible <span class="critic comment">and comments can be added inline</span>.</p>
+<mark class="critic block">
+<p>Formatting can also be applied to blocks by putting the opening and closing
+tags on separate lines and adding new lines between the tags and the content.</p>
+</mark>
+<p><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-delete">Del</kbd></span></p>
+<h2 id="grids">Grids<a class="headerlink" href="#grids" title="Permanent link">¶</a></h2>
+<p>还是用不了</p>
+<div class="grid cards">
+<ul>
+<li>:fontawesome-brands-html5: <strong>HTML</strong> for content and structure</li>
+<li>:fontawesome-brands-js: <strong>JavaScript</strong> for interactivity</li>
+<li>:fontawesome-brands-css3: <strong>CSS</strong> for text running out of boxes</li>
+<li>:fontawesome-brands-internet-explorer: <strong>Internet Explorer</strong> ... huh?</li>
+</ul>
+</div>
+<h2 id="images">Images<a class="headerlink" href="#images" title="Permanent link">¶</a></h2>
+<figure>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-width="100%" href="https://dummyimage.com/600x400/"><img alt="Image title" src="https://dummyimage.com/600x400/" width="300"/></a>
+</p>
+<figcaption>Image caption</figcaption>
+</figure>
+<h2 id="lists">Lists<a class="headerlink" href="#lists" title="Permanent link">¶</a></h2>
+<!-- - [x] Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- [12 ] Vestibulum convallis sit amet nisi a tincidunt
+    * [x] In hac habitasse platea dictumst
+    * [x] In scelerisque nibh non dolor mollis congue sed et metus
+    * [ ] Praesent sed risus massa
+- [12 ] Aenean pretium efficitur erat, donec pharetra, ligula non scelerisque -->
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.annotate", "content.tabs.link", "navigation.sections", "navigation.expand", "navigation.indexes", "navigation.tracking"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+<script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.4/dist/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
