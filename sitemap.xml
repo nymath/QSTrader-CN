@@ -2,37 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://nymath.com/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/Test/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/ch1/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/ch2/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/ch3/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>http://nymath.com/ch4/</loc>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/che/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://nymath.com/ref/</loc>
-         <lastmod>2023-01-26</lastmod>
+         <lastmod>2023-01-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -156,12 +156,17 @@
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../ch2/">
-        Modules II(Portfolio &amp; Execution)
+        Modules II (Order)
       </a>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../ch3/">
-        Modules III(Backtest)
+        Modules III(Portfolio &amp; Execution)
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ch4/">
+        Modules IV (Backtest)
       </a>
 </li>
 <li class="md-nav__item">
@@ -211,7 +216,9 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="_1">模组简介<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
-<p>考虑到模组数量过多，所以我按照功能大致将其分解为3类。本节是第一部分, 大致介绍了金融市场以及策略的结构。本节的终极目的是构建<code>BacktestDataHandler</code>以及<code>AlphaModel</code></p>
+<p>对于一个事件驱动的交易系统而言, 每天产生的四类事件分别是, MarketEvent, SignalEvent, OrderEvent, FillEvent</p>
+<p>考虑到模组数量过多，所以我按照功能大致将其分解为4类。本节是第一部分, 大致介绍了金融市场以及策略的结构。本节的终极目的是构建<code>BacktestDataHandler</code>以及<code>AlphaModel</code>, 也就是
+处理MarketEvent以及SignalEvent.</p>
 <pre class="mermaid"><code>classDiagram
     AlphaModel *-- BacktestDataHandler: data_handler
     AlphaModel *-- SignalsCollection: signals
@@ -375,13 +382,29 @@ AssetPriceBuffers里最重要的一个attribute是<code>prices</code>, 他是一
 <li>目标权重</li>
 </ol>
 <p>你应当根据具体语境来区别不同的"信号"</p>
-<details class="abstract"><summary>Signal</summary><div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">append(asset, price)</label><label for="__tabbed_4_2">update_assets(dt)</label></div>
+<details class="abstract"><summary>Signal</summary><div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">append(asset, price)</label><label for="__tabbed_4_2">update_assets(dt)</label><label for="__tabbed_4_3">__call__</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>直接执行self.buffers.append(asset, price)</p>
+<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
+<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span> <span class="n">price</span><span class="p">)</span>
+</code></pre></div>
+直接执行self.buffers.append(asset, price)</p>
 </div>
 <div class="tabbed-block">
-<p>从universe中获取资产池并<del class="critic">扩充</del>(我目前觉得这个不太合理)</p>
+<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">def</span> <span class="nf">update_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>
+<a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">universe_assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">get_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">extra_assets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">universe_assets</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">)))</span>
+<a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">for</span> <span class="n">extra_asset</span> <span class="ow">in</span> <span class="n">extra_assets</span><span class="p">:</span>
+<a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">extra_asset</span><span class="p">)</span>
+</code></pre></div>
+从universe中获取资产池并<del class="critic">扩充</del>(我目前觉得这个不太合理)</p>
+</div>
+<div class="tabbed-block">
+<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">,</span> <span class="n">lookback</span><span class="p">):</span>
+<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>    <span class="k">return</span> <span class="n">score</span>
+</code></pre></div>
+return 一个 得分</p>
 </div>
 </div>
 </div>
@@ -390,28 +413,31 @@ AssetPriceBuffers里最重要的一个attribute是<code>prices</code>, 他是一
 <details class="abstract"><summary>SignalsCollection</summary><div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">__getitem__(signal: str)</label><label for="__tabbed_5_2">update(self, dt)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
-<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span>
+<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+<a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span>
 </code></pre></div>
 利用getitem可以利用类似于字典索引的syntax得到单独的信号类</p>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-<a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>
-<a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>        <span class="n">assets</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">assets</span>
-<a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a>        <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">:</span>
-<a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a>            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_asset_latest_mid_price</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">asset</span><span class="p">)</span>
-<a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span> <span class="n">price</span><span class="p">)</span>
-<a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">warmup</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a>
+<a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a>        <span class="n">assets</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">assets</span>
+<a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a>        <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">:</span>
+<a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a>            <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">get_asset_latest_mid_price</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">asset</span><span class="p">)</span>
+<a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span> <span class="n">price</span><span class="p">)</span>
+<a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">warmup</span> <span class="o">+=</span> <span class="mi">1</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 </details>
 <p>SignalsCollection的update方法会从DataHandler中取当前时刻的数据, 并将其append到缓存的deque里.</p>
+<blockquote>
+<p>值得注意的是, 这里的self.signals仅仅只是字典, 而后文的signals通常则是指SignalsCollection这个类</p>
+</blockquote>
 <h2 id="alpha_model">alpha_model<a class="headerlink" href="#alpha_model" title="Permanent link">¶</a></h2>
 <p>SignalsCollection主要为AlphaModel提供决策信息. AlphaModel通常是我们自己写的, 通常实现一个新的策略时, 需要写一个Signal的子类以及AlphaModel的子类.</p>
 <div class="admonition note">
@@ -436,23 +462,40 @@ AssetPriceBuffers里最重要的一个attribute是<code>prices</code>, 他是一
         _generate_weights(dt)
         __call__(dt)
     }</code></pre>
-<details class="abstract"><summary>TopNMomentumAlphaModel</summary><div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">_generate_weights</label><label for="__tabbed_6_2">__call__(dt)</label></div>
+<details class="abstract"><summary>TopNMomentumAlphaModel</summary><div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">_select_assets</label><label for="__tabbed_6_2">_generate_weights</label><label for="__tabbed_6_3">__call__(dt)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span> <span class="nf">_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>    <span class="n">assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">get_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-<a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>    <span class="n">weights</span> <span class="o">=</span>  <span class="p">{</span><span class="n">asset</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">}</span>
-<a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a>    <span class="n">top_assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-<a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>
-<a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">warmup</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mom_lookback</span><span class="p">:</span>
-<a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>        <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">top_assets</span><span class="p">:</span>
-<a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>            <span class="n">weights</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">mom_top_n</span>
-<a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a>    <span class="k">return</span> <span class="n">weights</span>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">def</span> <span class="nf">_highest_momentum_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>    <span class="n">assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="s1">'momentum'</span><span class="p">]</span><span class="o">.</span><span class="n">assets</span>
+<a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>    <span class="n">all_momenta</span> <span class="o">=</span> <span class="p">{</span>
+<a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a>        <span class="n">asset</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="s1">'momentum'</span><span class="p">](</span>
+<a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a>            <span class="n">asset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mom_lookback</span>
+<a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a>        <span class="p">)</span> <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">assets</span>
+<a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a>    <span class="p">}</span>
+<a href="#__codelineno-9-8" id="__codelineno-9-8" name="__codelineno-9-8"></a>    <span class="k">return</span> <span class="p">[</span>
+<a href="#__codelineno-9-9" id="__codelineno-9-9" name="__codelineno-9-9"></a>        <span class="n">asset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+<a href="#__codelineno-9-10" id="__codelineno-9-10" name="__codelineno-9-10"></a>            <span class="n">all_momenta</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+<a href="#__codelineno-9-11" id="__codelineno-9-11" name="__codelineno-9-11"></a>            <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<a href="#__codelineno-9-12" id="__codelineno-9-12" name="__codelineno-9-12"></a>            <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+<a href="#__codelineno-9-13" id="__codelineno-9-13" name="__codelineno-9-13"></a>        <span class="p">)</span>
+<a href="#__codelineno-9-14" id="__codelineno-9-14" name="__codelineno-9-14"></a>    <span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">mom_top_n</span><span class="p">]</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-<a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>    <span class="n">reutrn</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_weights</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">def</span> <span class="nf">_generate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a>    <span class="n">assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">get_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a>    <span class="n">weights</span> <span class="o">=</span>  <span class="p">{</span><span class="n">asset</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">}</span>
+<a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a>    <span class="n">top_assets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_assets</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+<a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a>
+<a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">warmup</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mom_lookback</span><span class="p">:</span>
+<a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a>        <span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">top_assets</span><span class="p">:</span>
+<a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a>            <span class="n">weights</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">mom_top_n</span>
+<a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a>    <span class="k">return</span> <span class="n">weights</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a>    <span class="n">reutrn</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_weights</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>

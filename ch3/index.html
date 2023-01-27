@@ -7,10 +7,10 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <link href="http://nymath.com/ch3/" rel="canonical"/>
 <link href="../ch2/" rel="prev"/>
-<link href="../che/" rel="next"/>
+<link href="../ch4/" rel="next"/>
 <link href="../assets/images/favicon.png" rel="icon"/>
 <meta content="mkdocs-1.4.2, mkdocs-material-9.0.6" name="generator"/>
-<title>Modules III(Backtest) - QSTrader-CN 使用指南</title>
+<title>Modules III(Portfolio &amp; Execution) - QSTrader-CN 使用指南</title>
 <link href="../assets/stylesheets/main.558e4712.min.css" rel="stylesheet"/>
 <link href="../assets/stylesheets/palette.2505c338.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -59,7 +59,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Modules III(Backtest)
+              Modules III(Portfolio &amp; Execution)
             
           </span>
 </div>
@@ -128,13 +128,64 @@
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../ch2/">
-        Modules II(Portfolio &amp; Execution)
+        Modules II (Order)
       </a>
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Modules III(Portfolio &amp; Execution)
+          <span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="./">
-        Modules III(Backtest)
+        Modules III(Portfolio &amp; Execution)
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exchange">
+    exchange
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#broker">
+    broker
+  </a>
+<nav aria-label="broker" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokerfee_model">
+    broker.fee_model
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokertransaction">
+    broker.transaction
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokerportfolio">
+    broker.portfolio
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokersimulatedbroker">
+    broker.SimulatedBroker
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ch4/">
+        Modules IV (Backtest)
       </a>
 </li>
 <li class="md-nav__item">
@@ -156,26 +207,344 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exchange">
+    exchange
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#broker">
+    broker
+  </a>
+<nav aria-label="broker" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokerfee_model">
+    broker.fee_model
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokertransaction">
+    broker.transaction
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokerportfolio">
+    broker.portfolio
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#brokersimulatedbroker">
+    broker.SimulatedBroker
+  </a>
+</li>
+</ul>
 </nav>
 </div>
 </div>
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
-<h1 id="_1">模组介绍<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
-<p>在第三部分, 我们的目的是结合一二部分的成果, 构建回测系统.</p>
+<h1 id="_1">模组简介<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<p>在第二, 三部分, 我们主要介绍账户, 订单管理. 在本部分, 我们最终目的是构建<code>QuantTradingSystem</code></p>
 <pre class="mermaid"><code>classDiagram
-    BacktestTradingSession *-- Universe: universe
-    BacktestTradingSession *-- AlphaModel: alpha_model
-    BacktestTradingSession *-- SignalsCollection: signals
-    BacktestTradingSession *-- FeeModel : fee_model
-    BacktestTradingSession *-- BacktestDataHandler: data_handler
-    BacktestTradingSession *-- SimulatedExchange: exchange
-    BacktestTradingSession *-- SimulatedBroker: broker
-    BacktestTradingSession *-- SimulationEngine: sim_engine
-    BacktestTradingSession *-- Rebalance: rebalance_schedule
-    BacktestTradingSession &lt;.. QuantTradingSystem</code></pre>
-<p>接下来开始介绍不同的节点(nodes)</p>
+    QuantTradingSystem *-- Universe: universe
+    QuantTradingSystem *-- BacktestDataHandler: data_handler
+    QuantTradingSystem *-- SimulatedBroker: broker
+    QuantTradingSystem *-- AlphaModel: alpha_model
+    QuantTradingSystem &lt;.. OrderSizer
+    QuantTradingSystem &lt;.. PortfolioConstructionModel
+    QuantTradingSystem &lt;.. ExecutionHandler</code></pre>
+<p>我们首先着手于<code>SimulatedBroker</code>, 它是用于资产管理的类, 主要调用的时间在每天开盘后. 把订单的信息转换为交易的信息，进而更新账户信息。</p>
+<h2 id="exchange">exchange<a class="headerlink" href="#exchange" title="Permanent link">¶</a></h2>
+<p>用于模拟交易所, 里边大致有开收盘的时间信息.</p>
+<pre class="mermaid"><code>classDiagram
+    Exchange &lt;|-- SimulatedExchange
+    class SimulatedExchange{
+        start_dt
+        open_dt = "01:30:00"
+        close_dt = "07:00:00"
+        is_open_at_datetime(self, dt)
+    }
+    link Exchange "https://sourcegraph.com/github.com/mhallsmoore/qstrader@master/-/tree/qstrader/exchange"
+</code></pre>
+<div class="admonition abstract">
+<p class="admonition-title">SimulatedExchange</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">def</span> <span class="nf">is_open_at_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>    <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>        <span class="k">return</span> <span class="kc">False</span>
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_dt</span> <span class="o">&lt;=</span> <span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">close_dt</span>
+</code></pre></div>
+</div>
+<p>当然目前的这个判断方式是有问题的, 后边有空了改进一下.</p>
+<h2 id="broker">broker<a class="headerlink" href="#broker" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>classDiagram
+    FeeModel &lt;|-- PercentFeeModel
+    FeeModel &lt;|-- ZeroFeeModel
+    SimulatedBroker *-- BacktestDataHandler: data_handler
+    SimulatedBroker *-- FeeModel: fee_model
+    SimulatedBroker *-- Exchange: exchange
+    Exchange &lt;|-- SimulatedExchange
+    SimulatedBroker &lt;.. Transaction
+    SimulatedBroker &lt;.. Portfolio
+    Position &lt;.. Transaction
+    PositionHandler &lt;.. Position
+    PositionHandler &lt;.. Transaction
+    Portfolio *-- PositionHandler: pos_handler
+    Portfolio &lt;.. PortfolioEvent
+</code></pre>
+<h3 id="brokerfee_model">broker.fee_model<a class="headerlink" href="#brokerfee_model" title="Permanent link">¶</a></h3>
+<p>费用模型本质上就是封装了几个计算费用的函数, 需要传入资产的名字, 数量， consideration. </p>
+<pre class="mermaid"><code>classDiagram
+    FeeModel &lt;|-- PercentFeeModel
+    FeeModel &lt;|-- ZeroFeeModel
+    class FeeModel{
+        _calc_commission
+        _calc_tax
+        _calc_total_cost
+    }
+    class PercentFeeModel{
+        commission_pct
+        tax_pct
+    }</code></pre>
+<details class="abstract"><summary>fee_model</summary><div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">PercentFeeModel</label><label for="__tabbed_1_2">ZeroFeeModel</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">qstrader.broker.fee_model.fee_model</span> <span class="kn">import</span> <span class="n">FeeModel</span>
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">class</span> <span class="nc">PercentFeeModel</span><span class="p">(</span><span class="n">FeeModel</span><span class="p">)</span>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commission_pct</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">tax_pct</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">commission_pct</span> <span class="o">=</span> <span class="n">commission</span>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tax_pct</span> <span class="o">=</span> <span class="n">tax_pct</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>    <span class="k">def</span> <span class="nf">_calc_commission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">consideration</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commission_pct</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">consideration</span><span class="p">)</span>
+<a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>
+<a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>    <span class="k">def</span> <span class="nf">_calc_tax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">consideration</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tax_pct</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">consideration</span><span class="p">)</span>
+<a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>
+<a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>    <span class="k">def</span> <span class="nf">_calc_total_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">consideration</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a>        <span class="n">commission</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_commission</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">consideration</span><span class="p">,</span> <span class="n">broker</span><span class="p">)</span>
+<a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a>        <span class="n">tax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_tax</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">consideration</span><span class="p">,</span> <span class="n">broker</span><span class="p">)</span>
+<a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a>        <span class="k">return</span> <span class="n">commission</span> <span class="o">+</span> <span class="n">tax</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">qstrader.broker.fee_model.fee_model</span> <span class="kn">import</span> <span class="n">FeeModel</span>
+</code></pre></div>
+</div>
+</div>
+</input></input></div>
+</details>
+<h3 id="brokertransaction">broker.transaction<a class="headerlink" href="#brokertransaction" title="Permanent link">¶</a></h3>
+<p>这个类也非常简单, 甚至简单到不知道为什么要去封装. 直接把交易费用和成本加起来不就行了?   </p>
+<pre class="mermaid"><code>classDiagram
+    class Transaction{
+        asset: str
+        quantity: int
+        dt: pd.Timestampe
+        price: float
+        order_id: int
+        commission: float
+        cost_without_commission
+        cost_with_commission
+        __repr__(self)   
+    }</code></pre>
+<details class="abstract"><summary>Transaction</summary><div class="highlight"><span class="filename">transaction.py</span><pre><span></span><code><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
+<a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>        <span class="bp">self</span><span class="p">,</span>
+<a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>        <span class="n">asset</span><span class="p">,</span>
+<a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>        <span class="n">quantity</span><span class="p">,</span>
+<a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>        <span class="n">dt</span><span class="p">,</span>
+<a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>        <span class="n">price</span><span class="p">,</span>
+<a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>        <span class="n">order_id</span><span class="p">,</span>
+<a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a>        <span class="n">commission</span><span class="o">=</span><span class="mf">0.0</span>
+<a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>    <span class="p">):</span>
+<a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">asset</span> <span class="o">=</span> <span class="n">asset</span>
+<a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+<a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+<a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
+<a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+<a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">order_id</span>
+<a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">commission</span> <span class="o">=</span> <span class="n">commission</span>
+<a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a>
+<a href="#__codelineno-3-20" id="__codelineno-3-20" name="__codelineno-3-20"></a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a href="#__codelineno-3-21" id="__codelineno-3-21" name="__codelineno-3-21"></a>
+<a href="#__codelineno-3-22" id="__codelineno-3-22" name="__codelineno-3-22"></a>        <span class="k">return</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">(asset=</span><span class="si">%s</span><span class="s2">, quantity=</span><span class="si">%s</span><span class="s2">, dt=</span><span class="si">%s</span><span class="s2">, "</span> \
+<a href="#__codelineno-3-23" id="__codelineno-3-23" name="__codelineno-3-23"></a>            <span class="s2">"price=</span><span class="si">%s</span><span class="s2">, order_id=</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span>
+<a href="#__codelineno-3-24" id="__codelineno-3-24" name="__codelineno-3-24"></a>                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset</span><span class="p">,</span>
+<a href="#__codelineno-3-25" id="__codelineno-3-25" name="__codelineno-3-25"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span>
+<a href="#__codelineno-3-26" id="__codelineno-3-26" name="__codelineno-3-26"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order_id</span>
+<a href="#__codelineno-3-27" id="__codelineno-3-27" name="__codelineno-3-27"></a>            <span class="p">)</span>
+<a href="#__codelineno-3-28" id="__codelineno-3-28" name="__codelineno-3-28"></a>
+<a href="#__codelineno-3-29" id="__codelineno-3-29" name="__codelineno-3-29"></a>    <span class="nd">@property</span>
+<a href="#__codelineno-3-30" id="__codelineno-3-30" name="__codelineno-3-30"></a>    <span class="k">def</span> <span class="nf">cost_without_commission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a href="#__codelineno-3-31" id="__codelineno-3-31" name="__codelineno-3-31"></a>
+<a href="#__codelineno-3-32" id="__codelineno-3-32" name="__codelineno-3-32"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span>
+<a href="#__codelineno-3-33" id="__codelineno-3-33" name="__codelineno-3-33"></a>
+<a href="#__codelineno-3-34" id="__codelineno-3-34" name="__codelineno-3-34"></a>    <span class="nd">@property</span>
+<a href="#__codelineno-3-35" id="__codelineno-3-35" name="__codelineno-3-35"></a>    <span class="k">def</span> <span class="nf">cost_with_commission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a href="#__codelineno-3-36" id="__codelineno-3-36" name="__codelineno-3-36"></a>
+<a href="#__codelineno-3-37" id="__codelineno-3-37" name="__codelineno-3-37"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">commission</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+<a href="#__codelineno-3-38" id="__codelineno-3-38" name="__codelineno-3-38"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_without_commission</span>
+<a href="#__codelineno-3-39" id="__codelineno-3-39" name="__codelineno-3-39"></a>        <span class="k">else</span><span class="p">:</span>
+<a href="#__codelineno-3-40" id="__codelineno-3-40" name="__codelineno-3-40"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_without_commission</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">commission</span>
+</code></pre></div>
+</details>
+<p>值得注意的是Transaction类被调用的时间, 这里我列出一些回测信息供参考</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1">Transaction被调用的前后</label><label for="__tabbed_2_2">Trasaction内部信息</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>(1999-12-31 07:00:00+00:00) - market_close
+<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>(1999-12-31 07:00:00+00:00) - trading logic and rebalance
+<a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>(1999-12-31 07:00:00+00:00) - target weights: {'EQ:XLB': 0.0, 'EQ:XLE': 0.0, 'EQ:XLF': 0.0, 'EQ:XLI': 0.0, 'EQ:XLK': 0.3333333333333333, 'EQ:XLP': 0.0, 'EQ:XLU': 0.0, 'EQ:XLV': 0.3333333333333333, 'EQ:XLY': 0.3333333333333333}
+<a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>(1999-12-31 07:00:00+00:00) - submitted order: EQ:XLK, qty: 8017
+<a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>(1999-12-31 07:00:00+00:00) - submitted order: EQ:XLV, qty: 15149
+<a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>(1999-12-31 07:00:00+00:00) - submitted order: EQ:XLY, qty: 14116
+<a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>(2000-01-03 01:30:00+00:00) - market_open
+<a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>Backend MacOSX is interactive backend. Turning interactive mode on.
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span>
+<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="mi">8017</span>
+<a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="bp">self</span><span class="o">.</span><span class="n">direction</span>
+<a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="mf">1.0</span>
+<a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+<a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">Timestamp</span><span class="p">(</span><span class="s1">'2000-01-03 01:30:00+0000'</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">'UTC'</span><span class="p">)</span>
+<a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="bp">self</span><span class="o">.</span><span class="n">price</span>
+<a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="mf">41.01966094970703</span>
+<a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="bp">self</span><span class="o">.</span><span class="n">order_id</span>
+<a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="s1">'7855a32a1b9a42d1891b6caefd1ae9f2'</span>
+</code></pre></div>
+</div>
+</div>
+</input></input></div>
+<p>这说明订单管理部分是在收盘之后, 而资产组合的变换是在开盘之后. </p>
+<h3 id="brokerportfolio">broker.portfolio<a class="headerlink" href="#brokerportfolio" title="Permanent link">¶</a></h3>
+<p>portfolio里分为Position, PositonHandler, PortfolioEvent, Portfolio</p>
+<pre class="mermaid"><code>classDiagram
+    Position &lt;.. Transaction
+    PositionHandler o-- Position: positions
+    class Position{
+        asset: str
+        current_price: float
+        current_dt: pd.Timestamp
+        buy_quantity: int
+        sell_quantity: int
+        avg_bought: float
+        avg_sold: float
+        buy_commission: float
+        sell_commission: float
+        open_from_transaction(cls, transaction)
+        _check_set_dt(self, dt)
+        direction(self)
+        market_value(self)
+        avg_price(self)
+        net_quantity(self)
+        total_bought(self)
+        total_sold(self)
+        net_total(self)
+        commission(self)
+        net_incl_commission(self)
+        realised_pnl(self)
+        unrealised_pnl(self)
+        total_pnl(self)
+        update_current_price(self)
+        _transact_buy(self, quantity, price, commission)
+        _transact_sell(self, quantity, price, commission)
+        transact(self, transaction)
+    }
+    class PositionHandler{
+        positions: OrderedDict
+        transact_poistion(self, transaction)
+        total_market_value(self)
+        total_unrealised_pnl(self)
+        total_realised_pnl(self)
+        total_pnl(self)
+    }
+    class PortfolioEvent{
+        dt
+        type
+        description
+        debit
+        credit
+        balance ...
+    }
+    class Portfolio{
+        start_dt
+        starting_cash
+        currency: str
+        portfolio_id = None
+        name = None
+        pos_handler: PositionHandler
+        history: list
+        logger: logging
+        cash
+        transact_asset(self, txn: Transaction)
+        updatte_market_value_asset(self, asset, current_price, current_dt)
+    }</code></pre>
+<p>这个包就比较难了, 需要详解拆解. 首先是仓位管理的类, <code>Position</code>.</p>
+<p>Position是针对一个资产而言的, 如果想真正理解Position的使用情况，则需观察PositionHandler的方法和属性</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"><div class="tabbed-labels"><label for="__tabbed_3_1">Position的交易详情</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">market_close</span>
+<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">trading</span> <span class="n">logic</span> <span class="ow">and</span> <span class="n">rebalance</span>
+<a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">target</span> <span class="n">weights</span><span class="p">:</span> <span class="p">{</span><span class="s1">'EQ:XLB'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'EQ:XLE'</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span> <span class="s1">'EQ:XLF'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'EQ:XLI'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'EQ:XLK'</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span> <span class="s1">'EQ:XLP'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'EQ:XLU'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'EQ:XLV'</span><span class="p">:</span> <span class="mf">0.3333333333333333</span><span class="p">,</span> <span class="s1">'EQ:XLY'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+<a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">submitted</span> <span class="n">order</span><span class="p">:</span> <span class="n">EQ</span><span class="p">:</span><span class="n">XLE</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="mi">20271</span>
+<a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">submitted</span> <span class="n">order</span><span class="p">:</span> <span class="n">EQ</span><span class="p">:</span><span class="n">XLK</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="mf">180.0</span>
+<a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">submitted</span> <span class="n">order</span><span class="p">:</span> <span class="n">EQ</span><span class="p">:</span><span class="n">XLV</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="mf">460.0</span>
+<a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span> <span class="mi">07</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">submitted</span> <span class="n">order</span><span class="p">:</span> <span class="n">EQ</span><span class="p">:</span><span class="n">XLY</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="o">-</span><span class="mi">15673</span>
+<a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">03</span> <span class="mi">01</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">market_open</span>
+<a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="p">(</span><span class="mi">2000</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">03</span> <span class="mi">01</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="o">-</span> <span class="n">executed</span> <span class="n">order</span><span class="p">:</span> <span class="n">EQ</span><span class="p">:</span><span class="n">XLY</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="o">-</span><span class="mi">15673</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="mf">22.31</span><span class="p">,</span> <span class="n">consideration</span><span class="p">:</span> <span class="o">-</span><span class="mf">349725.00</span><span class="p">,</span> <span class="n">commission</span><span class="p">:</span> <span class="mf">0.00</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="o">-</span><span class="mf">349725.00</span>
+</code></pre></div>
+</div>
+</div>
+</input></div>
+<p>123</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">PositionHandler的调用时间</label><label for="__tabbed_4_2">更新情况</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div class="highlight"><pre><span></span><code><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="n">Adjusting</span> <span class="n">CSV</span> <span class="n">file</span> <span class="k">for</span> <span class="n">symbol</span> <span class="s1">'EQ:XLP'</span><span class="o">...</span>
+<a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="n">Adjusting</span> <span class="n">CSV</span> <span class="n">file</span> <span class="k">for</span> <span class="n">symbol</span> <span class="s1">'EQ:XLU'</span><span class="o">...</span>
+<a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">Adjusting</span> <span class="n">CSV</span> <span class="n">file</span> <span class="k">for</span> <span class="n">symbol</span> <span class="s1">'EQ:XLV'</span><span class="o">...</span>
+<a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="n">Adjusting</span> <span class="n">CSV</span> <span class="n">file</span> <span class="k">for</span> <span class="n">symbol</span> <span class="s1">'EQ:XLY'</span><span class="o">...</span>
+<a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="n">Initialising</span> <span class="n">simulated</span> <span class="n">broker</span> <span class="s2">"Backtest Simulated Broker Account"</span><span class="o">...</span>
+<a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="n">Backend</span> <span class="n">MacOSX</span> <span class="ow">is</span> <span class="n">interactive</span> <span class="n">backend</span><span class="o">.</span> <span class="n">Turning</span> <span class="n">interactive</span> <span class="n">mode</span> <span class="n">on</span><span class="o">.</span>
+</code></pre></div>
+在第一天开盘之前, PositionHandler就已经被实例化.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">def</span> <span class="nf">transact_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+<a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a>
+<a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a>    <span class="n">asset</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">asset</span>
+<a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a>    <span class="k">if</span> <span class="n">asset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">:</span>
+<a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span><span class="o">.</span><span class="n">transact</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+<a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a>    <span class="k">else</span><span class="p">:</span>
+<a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a>        <span class="n">position</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">open_from_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+<a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span>
+<a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a>
+<a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a>    <span class="c1"># If the position has zero quantity remove it</span>
+<a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span><span class="o">.</span><span class="n">net_quantity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a>        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>关于PortfolioEvent, 首先它会在第一天开盘前往券商订阅资金。更严谨的说, 在<code>BacktestTradingSession</code> instantiate的时候, 会调用一个函数_create_broker, 这时候就用到了PortfolioEvent. </p>
+<p>最后是<code>Portfolio</code>, 它在开始回测时被instantiate, 然后后边</p>
+<h2 id="brokersimulatedbroker">broker.SimulatedBroker<a class="headerlink" href="#brokersimulatedbroker" title="Permanent link">¶</a></h2>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
