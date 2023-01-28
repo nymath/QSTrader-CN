@@ -23,7 +23,7 @@ class PositionHandler(object):
         """
         asset = transaction.asset
         if asset in self.positions:
-            self.positions[asset].transact(transaction)
+            self.positions[asset].transact(transaction) # 根据交易信息来更新仓位
         else:
             position = Position.open_from_transaction(transaction)
             self.positions[asset] = position

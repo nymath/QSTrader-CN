@@ -42,3 +42,5 @@ class DynamicUniverse(Universe):
             asset for asset, asset_date in self.asset_dates.items()
             if asset_date is not None and dt >= asset_date
         ]
+
+# TODO: 增加沪深300，中证500股票动态池

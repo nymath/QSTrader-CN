@@ -8,12 +8,12 @@ class Cash(Asset):
     Parameters
     ----------
     currency : str, optional
-        The currency of the Cash Asset. Defaults to USD.
+        The currency of the Cash Asset. Defaults to CNY.
     """
 
     def __init__(
         self,
-        currency='USD'
+        currency='CNY'
     ):
         self.cash_like = True
         self.currency = currency

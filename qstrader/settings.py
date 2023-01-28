@@ -1,6 +1,6 @@
 SUPPORTED = {
     'CURRENCIES': [
-        'USD', 'GBP', 'EUR'
+        'USD', 'GBP', 'EUR', 'CNY'
     ],
     'FEE_MODEL': {
         'ZeroFeeModel': 'qstrader.broker.fee_model.zero_fee_model'

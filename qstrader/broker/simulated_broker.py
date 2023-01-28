@@ -13,7 +13,7 @@ from qstrader.broker.fee_model.zero_fee_model import ZeroFeeModel
 class SimulatedBroker(Broker):
     """
     A class to handle simulation of a brokerage that
-    provides sensible defaults for both currency (USD) and
+    provides sensible defaults for both currency (CNY) and
     transaction cost handling for execution.
 
     The default commission/fee model is a ZeroFeeModel
@@ -49,7 +49,7 @@ class SimulatedBroker(Broker):
         exchange,
         data_handler,
         account_id=None,
-        base_currency="USD", # FIXME: 换成人民币
+        base_currency="CNY", 
         initial_funds=0.0,
         fee_model=ZeroFeeModel(),
         slippage_model=None,
@@ -64,8 +64,8 @@ class SimulatedBroker(Broker):
         self.base_currency = self._set_base_currency(base_currency)
         self.initial_funds = self._set_initial_funds(initial_funds)
         self.fee_model = self._set_fee_model(fee_model)
-        self.slippage_model = None  # TODO: Implement
-        self.market_impact_model = None  # TODO: Implement
+        self.slippage_model = None  # TODO: Implement slippage_model
+        self.market_impact_model = None  # TODO: Implement impact_model 
 
         self.cash_balances = self._set_cash_balances()
         self.portfolios = self._set_initial_portfolios()
@@ -610,7 +610,6 @@ class SimulatedBroker(Broker):
                     consideration + total_commission
                 )
             )
-
     def submit_order(self, portfolio_id, order):
         """
         Execute an Order instance against the sub-portfolio

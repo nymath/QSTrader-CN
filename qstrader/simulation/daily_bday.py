@@ -2,6 +2,8 @@ import datetime
 
 import pandas as pd
 from pandas.tseries.offsets import BDay
+from pandas_market_calendars import get_calendar
+
 import pytz
 
 from qstrader.simulation.sim_engine import SimulationEngine
@@ -87,14 +89,91 @@ class DailyBusinessDaySimulationEngine(SimulationEngine):
 
             yield SimulationEvent(
                 pd.Timestamp(
-                    datetime.datetime(year, month, day, 1, 30), # FIXME: 修改时间
+                    datetime.datetime(year, month, day, 1, 30), 
                     tz=pytz.utc
                 ), event_type="market_open"
             )
 
             yield SimulationEvent(
                 pd.Timestamp(
-                    datetime.datetime(year, month, day, 7, 00), # FIXME: 修改时间
+                    datetime.datetime(year, month, day, 7, 00), 
+                    tz=pytz.utc
+                ), event_type="market_close"
+            )
+
+            if self.post_market:
+                yield SimulationEvent(
+                    pd.Timestamp(
+                        datetime.datetime(year, month, day, 23, 59), tz='UTC'
+                    ), event_type="post_market"
+                )
+
+
+class DailyBusinessDaySimulationEnginePro(SimulationEngine):
+
+    def __init__(self, starting_day, ending_day, pre_market=True, post_market=True):
+        if ending_day < starting_day:
+            raise ValueError(
+                "Ending date time %s is earlier than starting date time %s. "
+                "Cannot create DailyBusinessDaySimulationEngine "
+                "instance." % (ending_day, starting_day)
+            )
+
+        self.starting_day = starting_day
+        self.ending_day = ending_day
+        self.pre_market = pre_market
+        self.post_market = post_market
+        self.business_days = self._generate_business_days() 
+
+    def _generate_business_days(self):
+        """
+        Generate the list of business days using midnight UTC as
+        the timestamp.
+
+        Returns
+        -------
+        `list[pd.Timestamp]`
+            The business day range list.
+        """
+        
+        shanghai_calendar = get_calendar('SSE')
+        xx = shanghai_calendar.valid_days(start_date=self.starting_day,end_date=self.ending_day)
+        days = pd.DatetimeIndex([pd.Timestamp(f'{x.date()} 01:30:00',tz = pytz.UTC) for x in xx])
+
+        return days
+
+    def __iter__(self):
+        """
+        Generate the daily timestamps and event information
+        for pre-market, market open, market close and post-market.
+
+        Yields
+        ------
+        `SimulationEvent`
+            Market time simulation event to yield
+        """
+        for index, bday in enumerate(self.business_days):
+            year = bday.year
+            month = bday.month
+            day = bday.day
+
+            if self.pre_market:
+                yield SimulationEvent(
+                    pd.Timestamp(
+                        datetime.datetime(year, month, day), tz='UTC'
+                    ), event_type="pre_market"
+                )
+
+            yield SimulationEvent(
+                pd.Timestamp(
+                    datetime.datetime(year, month, day, 1, 30), 
+                    tz=pytz.utc
+                ), event_type="market_open"
+            )
+
+            yield SimulationEvent(
+                pd.Timestamp(
+                    datetime.datetime(year, month, day, 7, 00), 
                     tz=pytz.utc
                 ), event_type="market_close"
             )

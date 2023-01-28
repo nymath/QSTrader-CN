@@ -2,7 +2,9 @@ from math import floor
 
 import numpy as np
 
-
+'''
+current_price 与 avg_price 的区别
+'''
 class Position(object):
     """
     Handles the accounting of entering a new position in an
@@ -206,7 +208,7 @@ class Position(object):
         return self.avg_sold * self.sell_quantity
 
     @property
-    def net_total(self):
+    def net_total(self): # net_total相当于调仓对现金的影响
         """
         Calculates the net total average cost of assets
         bought and sold.

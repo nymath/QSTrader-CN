@@ -1,5 +1,5 @@
 from qstrader.alpha_model.alpha_model import AlphaModel
-
+from qstrader.asset.universe.universe import Universe
 
 class FixedSignalsAlphaModel(AlphaModel):
     """
@@ -18,8 +18,8 @@ class FixedSignalsAlphaModel(AlphaModel):
 
     def __init__(
         self,
-        signal_weights,
-        universe=None,
+        signal_weights: dict[str: float],
+        universe: Universe=None,
         data_handler=None
     ):
         self.signal_weights = signal_weights

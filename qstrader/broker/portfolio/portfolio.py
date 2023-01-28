@@ -34,7 +34,7 @@ class Portfolio(object):
         self,
         start_dt,
         starting_cash=0.0,
-        currency="USD",
+        currency="CNY",
         portfolio_id=None,
         name=None
     ):

@@ -117,7 +117,7 @@ class PortfolioConstructionModel(object):
             The union of the zero-weights and optimised weights, where the
             optimised weights take precedence.
         """
-        return {**zero_weights, **optimised_weights}
+        return {**zero_weights, **optimised_weights} # MARK: 注意权重更新的方式
 
     def _generate_target_portfolio(self, dt, weights):
         """

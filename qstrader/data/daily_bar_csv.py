@@ -5,9 +5,11 @@ import numpy as np
 import pandas as pd
 import pytz
 from qstrader import settings
+from .data_source import DataSource
 
 
-class CSVDailyBarDataSource(object):
+
+class CSVDailyBarDataSource(DataSource):
     """
     Encapsulates loading, preparation and querying of CSV files of
     daily 'bar' OHLCV data. The CSV files are converted into a intraday
@@ -216,7 +218,7 @@ class CSVDailyBarDataSource(object):
         """
         bid_ask_df = self.asset_bid_ask_frames[asset]
         try:
-            bid = bid_ask_df.iloc[bid_ask_df.index.get_loc(dt, method='pad')]['Bid']
+            bid = bid_ask_df.iloc[int(bid_ask_df.index.get_indexer([dt], method='pad'))]['Bid']
         except KeyError:  # Before start date
             return np.NaN
         return bid
@@ -240,7 +242,7 @@ class CSVDailyBarDataSource(object):
         """
         bid_ask_df = self.asset_bid_ask_frames[asset]
         try:
-            ask = bid_ask_df.iloc[bid_ask_df.index.get_loc(dt, method='pad')]['Ask']
+            ask = bid_ask_df.iloc[int(bid_ask_df.index.get_indexer([dt], method='pad'))]['Ask']
         except KeyError:  # Before start date
             return np.NaN
         return ask

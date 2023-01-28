@@ -6,13 +6,18 @@ from qstrader.broker.simulated_broker import SimulatedBroker
 from qstrader.broker.fee_model.zero_fee_model import ZeroFeeModel
 from qstrader.data.backtest_data_handler import BacktestDataHandler
 from qstrader.data.daily_bar_csv import CSVDailyBarDataSource
-from qstrader.exchange.simulated_exchange import SimulatedExchange
-from qstrader.simulation.daily_bday import DailyBusinessDaySimulationEngine
+from qstrader.exchange.simulated_exchange import SimulatedExchange, SimulatedExchangePro
+from qstrader.simulation.daily_bday import DailyBusinessDaySimulationEngine, DailyBusinessDaySimulationEnginePro
 from qstrader.system.qts import QuantTradingSystem
+
 from qstrader.system.rebalance.buy_and_hold import BuyAndHoldRebalance
 from qstrader.system.rebalance.daily import DailyRebalance
 from qstrader.system.rebalance.end_of_month import EndOfMonthRebalance
 from qstrader.system.rebalance.weekly import WeeklyRebalance
+from qstrader.system.rebalance.api import Monthly, Rebalance
+
+
+
 from qstrader.trading.trading_session import TradingSession
 from qstrader import settings
 
@@ -102,7 +107,7 @@ class BacktestTradingSession(TradingSession):
         self.broker = self._create_broker()
         self.sim_engine = self._create_simulation_engine()
 
-        if rebalance == 'weekly':
+        if rebalance == 'weekly': # TODO: 把rebalance细节检查部分放到私有函数里
             if 'rebalance_weekday' in kwargs:
                 self.rebalance_weekday = kwargs['rebalance_weekday']
             else:
@@ -145,7 +150,7 @@ class BacktestTradingSession(TradingSession):
         `SimulatedExchanage`
             The simulated exchange instance.
         """
-        return SimulatedExchange(self.start_dt)
+        return SimulatedExchangePro(self.start_dt)
 
     def _create_data_handler(self, data_handler):
         """
@@ -210,7 +215,7 @@ class BacktestTradingSession(TradingSession):
             fee_model=self.fee_model
         )
         broker.create_portfolio(self.portfolio_id, self.portfolio_name)
-        broker.subscribe_funds_to_portfolio(self.portfolio_id, self.initial_cash)
+        broker.subscribe_funds_to_portfolio(self.portfolio_id, self.initial_cash) # MARK: 订阅资金到券商账户
         return broker
 
     def _create_simulation_engine(self):
@@ -225,7 +230,7 @@ class BacktestTradingSession(TradingSession):
         `SimulationEngine`
             The simulation engine generating simulation timestamps.
         """
-        return DailyBusinessDaySimulationEngine(
+        return DailyBusinessDaySimulationEnginePro(
             self.start_dt, self.end_dt, pre_market=False, post_market=False
         )
 
@@ -239,23 +244,8 @@ class BacktestTradingSession(TradingSession):
         `List[pd.Timestamp]`
             The list of rebalance timestamps.
         """
-        if self.rebalance == 'buy_and_hold':
-            rebalancer = BuyAndHoldRebalance(self.start_dt)
-        elif self.rebalance == 'daily':
-            rebalancer = DailyRebalance(
-                self.start_dt, self.end_dt
-            )
-        elif self.rebalance == 'weekly':
-            rebalancer = WeeklyRebalance(
-                self.start_dt, self.end_dt, self.rebalance_weekday
-            )
-        elif self.rebalance == 'end_of_month':
-            rebalancer = EndOfMonthRebalance(self.start_dt, self.end_dt)
-        else:
-            raise ValueError(
-                'Unknown rebalance frequency "%s" provided.' % self.rebalance
-            )
-        return rebalancer.rebalances
+            
+        return self.rebalance.rebalances
 
     def _create_quant_trading_system(self, **kwargs):
         """
@@ -386,12 +376,12 @@ class BacktestTradingSession(TradingSession):
             if settings.PRINT_EVENTS:
                 print("(%s) - %s" % (event.ts, event.event_type))
 
-            # Update the simulated broker
-            self.broker.update(dt)
+            # Update the simulated broker 
+            self.broker.update(dt) # 
 
             # Update any signals on a daily basis
             if self.signals is not None and event.event_type == "market_close":
-                self.signals.update(dt)
+                self.signals.update(dt) # MARK: 在收盘的时候更新价格, 也就是deque里存的是收盘价. 
 
             # If we have hit a rebalance time then carry
             # out a full run of the quant trading system
@@ -403,7 +393,7 @@ class BacktestTradingSession(TradingSession):
                                 "(%s) - trading logic "
                                 "and rebalance" % event.ts
                             )
-                        self.qts(dt, stats=stats)
+                        self.qts(dt, stats=stats) # dt是收盘的时间, 因为我们定义的_is_rebalance_event.
             else:
                 if self._is_rebalance_event(dt):
                     if settings.PRINT_EVENTS:
